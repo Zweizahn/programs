@@ -1,11 +1,12 @@
 #!/usr/bin/perl
 #
-# Last change 	23.Jul 2013
+# Last change 	24.Jul 2013
 # Author	Erik Blosze
 #
 use strict;
 use warnings;
 use feature ':5.10';
+use Getopt::Std;
 
 # Definition  scalar variables: _U means upstream, _D downstream
 my $NrOutlines  = 0;
@@ -58,11 +59,11 @@ sub OUTPUT	# Prints the output
 }
 
 #### Main programm ####
-my $LENGHT=scalar @ARGV;
-if ($LENGHT == 0) {
-	die "Usage: countwwpn.pl <messages file>"
+# Check input parameters
+my $LENGTH=scalar @ARGV;
+if ($LENGTH == 0) {
+	die "Usage: countwwpn.pl <messages file> [-s <Start time>] [-e <End time>]\n"
 }
-
 
 my $FILE=$ARGV[0];
 open my $FILEHANDLE,$FILE or die "File \"$FILE\" does not exist\n";	#Check if file exists
@@ -70,7 +71,21 @@ if (-d $FILE) {
 	 die "File \"$FILE\" is not a file but a directory\n";
 }
 
+# Check for additional parameters on the command line
+my %OPTS;
+my $START = '';
+my $END   = '';
+if ($LENGTH > 1) {
+say "Calling getopt";
+	getopt('es',\%OPTS);
+	my $START = $OPTS->{'s'};
+	my $END   = $OPTS->{'e'};
+} 
+say "LENGTH is $LENGTH";
+say "START is \"$START\"";
+say "END is \"$END\"";
 
+# *****************
 while (<$FILEHANDLE>) {
 	$NrLines++;
 	if (!m/SCSI command abort/) {next}; 	#Leave while loop if no SCSI command abort can be found
