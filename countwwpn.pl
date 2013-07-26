@@ -93,9 +93,17 @@ my @FIELDS;
 if ($LENGTH > 1) {		# Start/End date set?
 	getopts("e:s:",\%OPTS);
 	@FIELDS = split(/ +/,$OPTS{'e'});
-	$END    = DATECONVERT($FIELDS[0],$FIELDS[1],$FIELDS[2]);
+	if (scalar @FIELDS > 0) {
+		$END    = DATECONVERT($FIELDS[0],$FIELDS[1],$FIELDS[2])
+	} else {
+		$END = '1300000000';		# No end date set
+	}
 	@FIELDS = split(/ +/,$OPTS{'s'});
-	$START  = DATECONVERT($FIELDS[0],$FIELDS[1],$FIELDS[2]);
+	if (scalar @FIELDS > 0) {
+		$START  = DATECONVERT($FIELDS[0],$FIELDS[1],$FIELDS[2]);
+	} else {
+		$START = '0';			# No start date set
+	}
 }  else {
 	$END   = '1300000000';	# Bigger than the biggest possible DATECONVERT value
 	$START = '0';
