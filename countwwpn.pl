@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -T
 #
 # Last change 	26.Jul 2013
 # Author	Erik Blosze
